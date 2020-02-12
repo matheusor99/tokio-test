@@ -36,11 +36,12 @@ public class EnderecoService {
 		return result.getBody();
 	}
 	
-	public String save(String cep, Long idCustomer) {
+	public Endereco save(String cep, Long idCustomer) {
 		Customer customer = customerService.findById(idCustomer).get();
 		Endereco endereco = search(cep);
+		customer.addEndereco(endereco);
 		endereco.setCustomer(customer);
-		repository.save(endereco);
-		return "Endereço inserido com sucesso";
+		Endereco result = repository.save(endereco);
+		return result;
 	}
 }

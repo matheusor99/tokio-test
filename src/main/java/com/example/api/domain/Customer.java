@@ -1,5 +1,6 @@
 package com.example.api.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -28,7 +29,7 @@ public class Customer {
 	private String email;
 	
 	@OneToMany(mappedBy="customer")
-	List<Endereco> enderecos; 
+	List<Endereco> enderecos = new ArrayList<>(); 
 
 	public Long getId() {
 		return id;
@@ -52,6 +53,10 @@ public class Customer {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public void addEndereco(Endereco endereco) {
+		this.enderecos.add(endereco);
 	}
 
 }

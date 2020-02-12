@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.api.domain.DadosRelacao;
 import com.example.api.domain.Endereco;
 import com.example.api.service.EnderecoService;
 
@@ -37,8 +38,8 @@ public class EnderecoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> save(@RequestBody String cpf, @RequestBody Long idCustomer) {
-		String result = service.save(cpf, idCustomer);
+	public ResponseEntity<Endereco> save(@RequestBody DadosRelacao dados) {
+		Endereco result = service.save(dados.getCep(), dados.getIdCustomer());
 		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
 }

@@ -17,36 +17,16 @@ public class Endereco {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonProperty
 	private Long id;
-	
-	@JsonProperty
 	private String logradouro;
-	
-	@JsonProperty
 	private String cep;
-	
-	@JsonProperty
 	private String complemento;
-	
-	@JsonProperty
 	private String bairro;
-	
-	@JsonProperty
 	private String localidade;
-	
-	@JsonProperty
 	private String uf;
-	
-	@JsonProperty
 	private String unidade;
-	
-	@JsonProperty
 	private String ibge;
-	
-	@JsonProperty
 	private String gia;
-	
 	@ManyToOne
 	@JoinColumn(name= "customer_id")
 	private Customer customer;
@@ -137,16 +117,5 @@ public class Endereco {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-	}
-	
-
-//	public void setCep(String cep) {
-//		if (cep == null || cep.length() > 8 || cep.length() < 8) {
-//			throw new DomainExceptions("Dados do campo cep não está correto");
-//		} else {
-//			this.cep = cep;
-//		}
-//	}
-	
-	
+	}	
 }
