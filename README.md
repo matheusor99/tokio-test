@@ -1,4 +1,4 @@
-# Custumer Service
+# Customer and Endereco Service
 
 ### Requisitos
 
