@@ -1,5 +1,7 @@
 package com.example.api.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,12 +11,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.example.api.domain.exceptions.DomainExceptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name= "endereco")
-public class Endereco {
-
+public class Endereco implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -28,6 +32,7 @@ public class Endereco {
 	private String ibge;
 	private String gia;
 	@ManyToOne
+	@JsonBackReference
 	@JoinColumn(name= "customer_id")
 	private Customer customer;
 
@@ -116,6 +121,9 @@ public class Endereco {
 	}
 
 	public void setCustomer(Customer customer) {
+		if(customer == null) {
+			throw new DomainExceptions("usuario inexistente");
+		}
 		this.customer = customer;
 	}	
 }

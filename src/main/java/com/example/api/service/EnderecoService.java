@@ -1,7 +1,6 @@
 package com.example.api.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.example.api.domain.Customer;
 import com.example.api.domain.Endereco;
-import com.example.api.repository.CustomerRepository;
+import com.example.api.domain.exceptions.DomainExceptions;
 import com.example.api.repository.EnderecoRepository;
 
 @Service
@@ -37,11 +36,25 @@ public class EnderecoService {
 	}
 	
 	public Endereco save(String cep, Long idCustomer) {
-		Customer customer = customerService.findById(idCustomer).get();
-		Endereco endereco = search(cep);
-		customer.addEndereco(endereco);
-		endereco.setCustomer(customer);
-		Endereco result = repository.save(endereco);
-		return result;
+		try {
+			Customer customer = customerService.findById(idCustomer).get();
+			Endereco endereco = search(cep);
+			customer.addEndereco(endereco);
+			endereco.setCustomer(customer);
+			Endereco result = repository.save(endereco);
+			return result;
+		} catch (DomainExceptions e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	
+	public String delete(Long id) {
+		if (repository.findById(id).get() != null) {
+			return "Endereço excluido com sucesso";
+		}
+		return "Endereço inexistente";
 	}
 }

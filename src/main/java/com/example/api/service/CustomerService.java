@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.api.domain.Customer;
+import com.example.api.domain.exceptions.DomainExceptions;
 import com.example.api.repository.CustomerRepository;
 
 @Service
@@ -19,37 +21,34 @@ public class CustomerService {
 		this.repository = repository;
 	}
 
-	public List<Customer> findAll() {
-		return repository.findAllByOrderByNameAsc();
+	public List<Customer> findAll(Pageable pageable) {
+		List<Customer> result = repository.findAllByOrderByNameAsc(pageable).getContent();
+		return result;
+		
 	}
 
 	public Optional<Customer> findById(Long id) {
 		return repository.findById(id);
 	}
 	
-	public String save(Customer customer) {
-		if (customer.getName().isEmpty()) {
-			return "O campo nome não pode ser vazio";
-		} else if (customer.getEmail().isEmpty()) {
-			return "O campo email não pode ser vazio";
-		} else {
-			repository.save(customer);
-			return "Cliente cadastrado com sucesso";
+	public Customer save(Customer customer) {
+		try {
+			return repository.save(customer);
+		} catch (DomainExceptions e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return null;
 		}
 	}
 	
-	public String update(Customer customer) {
-		if (customer.getId() == null) {
-			return "Cliente não identificado ou não existe";
-		} else if (customer.getName().isEmpty()) {
-			return "O campo nome não pode ser vazio";
-		} else if (customer.getEmail().isEmpty()) {
-			return "O campo email não pode ser vazio";
+	public Customer update(Customer customer) {
+		if(customer.getId() != null) {
+			if(repository.findById(customer.getId()).get() != null) {
+				return repository.save(customer);
+			}
+			return null;
 		}
-		else {
-			repository.save(customer);
-			return "Cliente atualizado com sucesso";
-		}
+		return null;
 	}
 	
 	public String delete(Long id) {

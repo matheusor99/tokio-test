@@ -3,6 +3,7 @@ package com.example.api.web.rest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,8 +31,8 @@ public class CustomerController {
 	}
 
 	@GetMapping
-	public List<Customer> findAll() {
-		return service.findAll();
+	public List<Customer> findAll(Pageable pageable) {
+		return service.findAll(pageable);
 	}
 
 	@GetMapping("/{id}")
@@ -41,14 +42,14 @@ public class CustomerController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<String> save(@RequestBody Customer customer) {
-		String result = service.save(customer);
+	public ResponseEntity<Customer> save(@RequestBody Customer customer) {
+		Customer result = service.save(customer);
 		return ResponseEntity.status(HttpStatus.CREATED).body(result);
 	}
 	
 	@PutMapping
-	public ResponseEntity<String> update(@RequestBody Customer customer) {
-		String result = service.update(customer);
+	public ResponseEntity<Customer> update(@RequestBody Customer customer) {
+		Customer result = service.update(customer);
 		return ResponseEntity.ok(result);
 	}
 	
